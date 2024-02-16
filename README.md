@@ -4,8 +4,9 @@
 
 <h1 align="center">Layerzs</h1>
 <p align="center">
-    A delightful and easy-to-use API that simplifies web design and development.<br />
-  Available as either <strong>Tailwind</strong> classes or <strong>React</strong> components.</strong>
+User-friendly API that makes web design and development simpler. <br />
+It's available as either <strong>Tailwind</strong> classes or
+<strong>React</strong> components.
 </p>
 
 
@@ -19,19 +20,19 @@
 <br />
 
 ## How does it work?
-You have access to advanced layers for layout, sizing, alignment, typography,
-tables, effects, and beyond...
+Layerzs provides advanced layers for layout, sizing, alignment, typography,
+tables, effects, and more. Each category consists of at least two layers. This
+guide starts with the foundational layers and moves upward.
 
-Each category comprises a minimum of two layers. While the topmost layer is
-typically utilized, this guide will begin with the foundational layers and
-progress upward.
+**Note:** Please read the [discussion](https://github.com/cipherlogs/layerzs/discussions/1) and vote for what you believe is best.
+
 
 <br />
 
 ## The Base Layer
-Let’s take *flexbox* as an example, the <ins>base layer</ins> is what you are
-already using, whether you write vanilla CSS, CSS in JS, or use tailwind
-classes. The same rules still apply.
+Take flexbox as an example. The base layer is what you're already using,
+whether you write vanilla CSS, CSS in JS, or use tailwind classes. The same
+rules still apply.
 
 <p align="center">
   <picture>
@@ -43,13 +44,11 @@ classes. The same rules still apply.
 
 <br />
 
-You have to learn it before you use it, and every time you use it, you have to
-constantly think about the *main axis*, the *cross axis*, and how they change.
-How do they affect *cross start*, *cross end*, *cross size*, and other
-properties. This may be great for beginners, but when you are more advanced,
-it becomes inefficient and a waste of time.
+Before using it, you need to understand the main axis, the cross axis, and how
+they change. This is great for beginners, but for advanced users it is
+inefficient and a waste of time.
 
-Does **Layerzs** offer something better?
+**Does Layerzs offer a better solution?**
 
 <br />
 <br />
@@ -64,18 +63,15 @@ Does **Layerzs** offer something better?
     </picture>
 </p>
 
-In the first layer, we can use *flexes*, it simplifies things by removing
+In the first layer, we use *flexes*. This simplifies things by removing
 unnecessary details and extra work from the base layer.
 
-believe or not, that tiny API is capable of doing more than what *flexbox*
-is able to but most importantly is that it is predictable and easier to reason
-about. and that's what we are going to see next.
 
+<br />
 <br />
 
 ### Alignments
-*flexes* is straightforward. It operates with only two fixed axes: These axes
-don't change, which makes understanding things very simple.
+Flexes is straightforward. It operates with only two fixed axes. These axes don't change, which makes understanding things very simple.
 
 <p align="center">
   <picture>
@@ -85,21 +81,21 @@ don't change, which makes understanding things very simple.
     </picture>
 </p>
 
+
 For example, if you want to center an item along the X-axis, it will be
-centered along the X-axis regardless of whether the *flex direction* is set to
-row or column, regardless of whether the direction is reversed or flipped or
-wherever. **it will always be centered along the X-axis**.
+centered along the X-axis regardless of the flex direction or other factors.
+It will always be centered along the X-axis.
 
-Unlike *flexbox* where many behaviours depend on other factors, and you have
-to always keep that in mind, *flexes* is the opposite the API is like
-hard set rule, which makes thinking and reasoning about things super easy.
-Let's use the *center* API and see how it behaves when used in two different
-scenarios.
-
+Unlike flexbox, where many behaviors depend on various factors that you always
+have to remember, flexes is different. Its API is like a strict rule that
+never changes, making it really easy to understand and figure out. Let's try
+using the *center* utility and see how it works in two different situations.
 <br />
 
-<ins>Note:</ins> *center* is the same as applying *centerX* and *centerY* at
-the same time, meaning that it will center along the X-axis and the Y-axis.
+<ins>Note:</ins> When you use center, it's like using both centerX and centerY
+at once. This means it will center along both the X-axis and the Y-axis.
+
+<br />
 
 <p align="center">
   <picture>
@@ -109,11 +105,11 @@ the same time, meaning that it will center along the X-axis and the Y-axis.
     </picture>
 </p>
 
-By default the API will target the **container**, in order to target an
-**item**, we add *i* to any method we want so instead of using *center*
-we'll use item center *iCenter*.
+<br />
 
-Let's see how alignment works when applied to an item instead.
+By default, the API targets the **container**. To target an **item**, we add
+'i' to any method we want. So instead of using 'center', we'll use item center
+'iCenter'.
 
 
 <p align="center">
@@ -127,15 +123,16 @@ Let's see how alignment works when applied to an item instead.
 That's interesting, **how's *flexes* capable of centering an item along
 the X-axis when direction is row?**
 
-Under the hood, *flexes* uses the number of items within the container to
-determine if the centering can happen.
+Behind the scenes, flexes uses the item count inside the container to decide
+if it can center them.
 
 
 <br />
+<br />
 
 ### Order
-By default *flexes* manages the ordering of the items and it allows you
-to shift the order of a specific item if you need to by using *iShift*.
+Flexes automatically manages the arrangement of items. If you need to change
+the order of a specific item, you can use 'iShift'.
 
 
 <p align="center">
@@ -149,8 +146,8 @@ to shift the order of a specific item if you need to by using *iShift*.
 <br />
 <br />
 
-However sometimes, you might need to set a custom ordering, imagine
-we want to achieve something like the following:
+
+Sometimes, you might want to set a custom order. Here's an example:
 
 ```css
 .item:nth-child(3n+1) { order: 1; }
@@ -158,7 +155,7 @@ we want to achieve something like the following:
 .item:nth-child(3n)   { order: 3; }
 ```
 
-We can easily create a custom order and pass it to *flex*.
+You can create a custom order and use it with flex.
 
 ```js
 const orders = {
@@ -168,19 +165,18 @@ const orders = {
   "3, 3": 3,
 };
 ```
+In the second layer, you can't set a custom order. Instead, you get access to
+a higher level API that lets you do more without worrying about low-level
+details.
 
-That's great, however in the second layer there's no way to set a custom
-ordering or even think about ordering because you get access to even a higher
-level API that helps you achieve bigger things and not waste time with low
-level things.
 
-To learn more, please take a look at the [API](./flexesAPI.md)
+To learn more, check out the [API](./flexesAPI.md)
 
 
 <br />
+<br />
 
 ### Orientation
-
 
 <p align="center">
   <picture>
@@ -190,26 +186,28 @@ To learn more, please take a look at the [API](./flexesAPI.md)
     </picture>
 </p>
 
-The current version of *reverse* reverses the direction however it keeps the
-layout the same way it was before so it looks like we just reversed the item
-orders. in order to only reverse the direction, you can use *flip ("dir")*, or
-just *flip* if wrap is on.
 
-**Note:** Take 5 seconds, and [vote &uarr;](https://github.com/cipherlogs/layerzs/discussions/1) for the upcoming API changes.
+The reverse function changes the direction but keeps the layout the same. It
+looks like the item orders are reversed. To only reverse the direction, use
+*flip ("dir")*, or just *flip* if wrap is on.
 
+**Note:** Please take a moment to [vote &uarr;](https://github.com/cipherlogs/layerzs/discussions/1) on upcoming API changes.
+
+<br />
 <br />
 
 ### Spacing
-To globally manage spacing from the **container**, you can use *autoGap*.
-You have 4 modes to choose from *none*, *around*, *between*, *even*, and a
-fallback value to apply if the mode can't be used.
+You can manage spacing from the **container** globally using autoGap. There
+are 4 modes: none, around, between, even, and a fallback value if the mode
+can't be used.
 
+Example:
 + *autoGap ("around")*
 + *autoGap ("even", "gap-2")*
 + *autoGap ("none", "gap-x-2 gap-y-2")*
 
-If the fallback is ommitted a gap of `gap-2` will be applied.
 
+If you don't provide a fallback, a gap of `gap-2` will be used.
 
 
 <p align="center">
@@ -221,22 +219,33 @@ If the fallback is ommitted a gap of `gap-2` will be applied.
 </p>
 
 
+
+To control the spacing of each item, use *iSpace*. It can do two things:
+
 In order to control the spacing of each **item**, you can use *iSpace*. to
 instruct it to do two things
 
-+ what to do when there's available space left
-    + Inject that space inside the item.
-    + Put that space after, before or around the item.
++ Decide what to do when there's extra space:
+    + Either add that space inside the item. **Inject**
+    + Or put that space after, before or around the item. **Put**
 
-+ what to do when there's no space left
++ Decide what to do when there's no space left (by default items will shrink). You can stop this or control how fast each item shrinks compared to others.
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://layerzs.tixte.co/r/fig9-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://layerzs.tixte.co/r/fig9-light.png">
+     <img alt="Tailwind CSS" src="https://layerzs.tixte.co/r/fig9-light.png" style="max-width: 100%;">
+    </picture>
+</p>
 
+That's it! Check out the docs and give it a try. With this small API, you can
+do everything you need with flexbox and more.
 
-
+**You might be wondering why there's another level on top of this?**
 
 <br />
 <br />
 
 ## The second layer
 WIP
-
