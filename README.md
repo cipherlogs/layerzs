@@ -11,6 +11,7 @@ It's available as either <strong>Tailwind</strong> classes or
 
 
 <p align="center">
+    <a href="https://twitter.com/cipherlogs"><img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/cipherlogs?style=flat"></a>
     <img src="https://img.shields.io/badge/work_is_still_in_progress-WIP-green?style=flat" alt="WIP">
     <img src="https://img.shields.io/github/license/cipherlogs/layerzs" alt="License">
 </p>
@@ -20,19 +21,50 @@ It's available as either <strong>Tailwind</strong> classes or
 <br />
 
 ## How does it work?
-Layerzs provides advanced layers for layout, sizing, alignment, typography,
-tables, effects, and more. Each category consists of at least two layers. This
-guide starts with the foundational layers and moves upward.
+Layerzs offers sophisticated layers for various tasks such as layout design,
+sizing, alignment, typography, table creation, effects, and more. To get a
+better understanding of how Layerzs is constructed, let's use flexbox as an
+example:
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://layerzs.tixte.co/r/fig0-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://layerzs.tixte.co/r/fig0-light.png">
+     <img alt="Tailwind CSS" src="https://layerzs.tixte.co/r/fig0-light.png" style="max-width: 100%;">
+    </picture>
+</p>
+
+
++ **API Layers:**
+    + **Layer1:** This is a basic layer that supports the next layer. You usually won't use it directly, but it's necessary for Layer2 to function.
+
+    + **Layer2:** This is a more advanced layer built on Layer1. It lets you create layouts quickly and easily. It can switch between CSS grid and CSS flexbox automatically, so you don't need to worry about the details. This combination creates a powerful and universal API.
+
+    + **Niche Layers:** These are built on Layer2. They're used to build components and more complex user interfaces.
+
+
+> [!CAUTION]
+>
+> Each new layer in the API is designed to replace the previous one. This
+> means if you're using Layer2, you won't need to use Layer1 or the base
+> layer. This is a key principle of our design. If a new layer doesn't make
+> the previous one obsolete, it's not a good abstraction. That's why our
+> top-level components are built with Layer2. They're not bloated like
+> other UI libraries, and they're easy to read, edit, and modify.
+
 
 **Note:** Please read the [discussion](https://github.com/cipherlogs/layerzs/discussions/1) and vote for what you believe is best.
 
+<br />
 
+**Next, we'll compare using flexes to using flexbox. Keep in mind that flexes is just Layer1. In practice, you'll be using Layer2 and above.**
+
+<br />
 <br />
 
 ## The Base Layer
-Take flexbox as an example. The base layer is what you're already using,
-whether you write vanilla CSS, CSS in JS, or use tailwind classes. The same
-rules still apply.
+The base layer is what you're already using, whether you write vanilla CSS,
+CSS in JS, or use tailwind classes. The same rules still apply.
 
 <p align="center">
   <picture>
@@ -239,13 +271,13 @@ instruct it to do two things
     </picture>
 </p>
 
-That's it! Check out the docs and give it a try. With this small API, you can
-do everything you need with flexbox and more.
+This compact API lets you do everything you could with flexbox, and more.
 
-**You might be wondering why there's another level on top of this?**
+Keep in mind, the next layer built on top of this should only use Layer1 and
+should render this layer obsolete. You've seen how simple and seamless it is
+to work with flexbox using Layer1. **But what about Layer2, which is the layer
+you'll actually be using?**
 
-<br />
-<br />
+That's all there is to it! Star this repo to stay up to date with upcoming
+changes.
 
-## The second layer
-WIP
