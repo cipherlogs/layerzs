@@ -95,9 +95,121 @@ inefficient and a waste of time.
     </picture>
 </p>
 
-In the first layer, we use *flexes*. This simplifies things by removing
-unnecessary details and extra work from the base layer.
+### Getting Started
+In the first layer, we'll be using *flexes*. This simplifies things by
+removing unnecessary details and extra work from the base layer.
 
+Start by installing *flexes*:
+
+```bash
+$ npm -i flexes
+```
+
+This version of flexes uses tailwind as the **base layer**, so ensure tailwind
+is installed. Then, import and initialize flexes:
+
+```js
+import flex from "flexes";
+
+function App() {
+  const {cls, f} = flex ();
+
+  return (<></>);
+}
+```
+
+Here, `f` contains the entire flexes API, and `cls` is a utility that helps us
+manage and run all tailwind classes and layerzs utils.
+
+
+#### cls
+
+`cls` removes tailwind duplicates and conflicts, and helps organize long
+tailwind class sets. It can also include variables and functions.
+
+```js
+className={cls("hover:p-2 hover:p-4")} // → 'hover:p-4'
+```
+
+It also assists in organizing lengthy sets of Tailwind classes.
+
+Instead of this:
+
+```js
+className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+```
+
+You could break it down to small sets that makes sense to you
+
+```jsx
+className={cls(
+  "relative inline-flex items-center justify-center",
+  "rounded-md p-2 text-gray-400",
+  "hover:bg-gray-700 hover:text-white",
+  "focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white",
+)}
+```
+
+You can also include variables and functions,
+
+```jsx
+const display = "flex";
+const background = (color = "black") =>
+    color === "black"
+    ? "bg-black"
+    : "bg-white";
+
+...
+
+<div className={cls(display, background,)}></div>
+<div className={cls(display, background("white"),)}></div>
+<div className={cls(display, "border border-dashed")}></div>
+```
+
+### Creating a container
+To create a flex box container using flexes, label the parent as a box and its
+children as items.
+
+```jsx
+<>
+  <div className={cls(f.box)}>
+    <div className={cls(f.item)}>Child 1</div>
+    <div className={cls(f.item)}>Child 2</div>
+  </div>
+</>
+```
+
+#### Box API
+> **box(direction, wrap, orders)**
+>
+> + direction (*optional*): "row", "col" (*default* = "row")
+>
+> + wrap (*optional*): enable wrap (*default* = false)
+>
+> + orders (*optional*): (*default* = items are ordered automatically)
+
+### Dealing with nested containers
+Often, you'll need to create a container that's also an item. In this case,
+you need to help flexes understand the nesting level you're at. Simply use
+`f.lastItem`.
+
+```jsx
+<>
+  <div className={cls(f.box)}>
+    <div className={cls(f.item, f.box)}>
+      <p>Child 1</p>
+      <div className={cls(f.item)}>Sub child 1</div>
+      <div className={cls(f.lastItem)}>Sub child 2</div>
+    </div>
+
+    <div className={cls(f.lastItem)}>
+      <p>Child 2</p>
+    </div>
+  </div>
+</>
+```
+
+**Note:** to use this featuer, switch to the *dev* branch.
 
 <br />
 <br />
@@ -112,7 +224,6 @@ Flexes is straightforward. It operates with only two fixed axes. These axes don'
      <img alt="Tailwind CSS" src="https://layerzs.tixte.co/r/fig3-light.png" style="max-width: 100%;">
     </picture>
 </p>
-
 
 For example, if you want to center an item along the X-axis, it will be
 centered along the X-axis regardless of the flex direction or other factors.
@@ -137,6 +248,16 @@ at once. This means it will center along both the X-axis and the Y-axis.
     </picture>
 </p>
 
+```jsx
+<>
+  <div className={cls(f.box, center)}>
+    <div className={cls(f.item)}>Child 1</div>
+    <div className={cls(f.item)}>Child 2</div>
+    <div className={cls(f.item)}>Child 2</div>
+  </div>
+</>
+```
+
 <br />
 
 By default, the API targets the **container**. To target an **item**, we add
@@ -152,11 +273,19 @@ By default, the API targets the **container**. To target an **item**, we add
     </picture>
 </p>
 
-That's interesting, **how's *flexes* capable of centering an item along
-the X-axis when direction is row?**
 
-Behind the scenes, flexes uses the item count inside the container to decide
-if it can center them.
+```jsx
+<>
+  <div className={cls(f.box)}>
+    <div className={cls(f.item, f.iCenter(3))}>Child 1</div>
+    <div className={cls(f.item)}>Child 2</div>
+    <div className={cls(f.item)}>Child 2</div>
+  </div>
+</>
+```
+
+That's interesting, flexbox doesn't have `justify-self` **how's *flexes*
+capable of centering an item along the X-axis when direction is row?**
 
 
 <br />
@@ -179,6 +308,30 @@ the order of a specific item, you can use 'iShift'.
 <br />
 
 
+```jsx
+<>
+  <div className={cls(f.box)}>
+    <div className={cls(f.item, f.iShift(2))}>Child 1</div>
+    <div className={cls(f.item)}>Child 2</div>
+    <div className={cls(f.item)}>Child 2</div>
+  </div>
+</>
+```
+
+#### iShift API
+> **iShift(n)**
+>
+> + n: (*default* = 0)
+>
+>   + if n > 0 -> shift to the right by n (if direction is col, it will shift
+>       to the bottom)
+>
+>   + if n < 0 -> shift to the left by n (if direction is col, it will shift
+>       to the top)
+>
+>   + if n == 0 -> no mouvement
+
+
 Sometimes, you might want to set a custom order. Here's an example:
 
 ```css
@@ -189,18 +342,20 @@ Sometimes, you might want to set a custom order. Here's an example:
 
 You can create a custom order and use it with flex.
 
-```js
+```jsx
 const orders = {
   // "start, step": order
   "1, 3": 1,
   "2, 3": 2,
   "3, 3": 3,
 };
+
+<div className={cls(f.box("col", true, orders))}>...</div>
 ```
+
 In the second layer, you can't set a custom order. Instead, you get access to
 a higher level API that lets you do more without worrying about low-level
 details.
-
 
 To learn more, check out the [API](./flexesAPI.md)
 
@@ -218,6 +373,23 @@ To learn more, check out the [API](./flexesAPI.md)
     </picture>
 </p>
 
+```jsx
+<>
+  <div className={cls(f.box, flip)}>
+    <div className={cls(f.item)}>Child 1</div>
+    <div className={cls(f.item)}>Child 2</div>
+    <div className={cls(f.item)}>Child 2</div>
+  </div>
+</>
+```
+
+
+#### flip API
+> **flip(mode)**
+>
+>  it will flip the direction, but only if wrap in on, if wrap is off and you
+>  want to flip the direction, use `flip("dir")`
+>
 
 The reverse function changes the direction but keeps the layout the same. It
 looks like the item orders are reversed. To only reverse the direction, use
@@ -251,6 +423,26 @@ If you don't provide a fallback, a gap of `gap-2` will be used.
 </p>
 
 
+```jsx
+<>
+  <div className={cls(f.box, f.autoGap)}>
+    <div className={cls(f.item)}>Child 1</div>
+    <div className={cls(f.item)}>Child 2</div>
+    <div className={cls(f.item)}>Child 2</div>
+  </div>
+</>
+```
+
+#### autoGap API
+> **autoGap(mode, fallback)**
+>  + mode:
+>    + "none"
+>    + "around"
+>    + "even"
+>    + "between"
+>
+>  + fallback: any value you want using tailwind classes (*default* gap-1)
+
 
 To control the spacing of each item, use *iSpace*. It can do two things:
 
@@ -271,6 +463,40 @@ instruct it to do two things
     </picture>
 </p>
 
+
+```jsx
+<>
+  <div className={cls(f.box)}>
+    <div className={cls(f.item)}>Child 1</div>
+    <div className={cls(f.item, f.iSpace("inject"))}>Child 2</div>
+    <div className={cls(f.item)}>Child 2</div>
+  </div>
+</>
+```
+
+#### iSpace API
+> **iSpace(arg1, arg2)**
+>  + arg1: what to do when there's available free space
+>    + "inject"
+>      + iSpace("inject"), or explicitly add the amount iSpace("inject", 4)
+>
+>    + "put"
+>      + "putBefore"
+>      + "putAfter"
+>      + "putAround"
+>
+>  + arg2: what to do when there's no avilable free space (*default* shrink)
+>    + control the amount of shrinking
+>      + `iSpace("inject", 1, 2)`
+>      + `iSpace("putAround", 2)`
+>
+>    + stop shrinking
+>      + `iSpace("inject", 1, 0)`
+>      + `iSpace("putAround", 0)`
+>
+
+<br />
+
 This compact API lets you do everything you could with flexbox, and more.
 
 Keep in mind, the next layer built on top of this should only use Layer1 and
@@ -278,6 +504,11 @@ should render this layer obsolete. You've seen how simple and seamless it is
 to work with flexbox using Layer1. **But what about Layer2, which is the layer
 you'll actually be using?**
 
-That's all there is to it! Star this repo to stay up to date with upcoming
-changes.
+<br />
+<br />
+
+## What's coming next?
+Star this repository to receive updates on upcoming changes and join the discussion! [discussion](https://github.com/cipherlogs/layerzs/discussions/1)
+
+Please vote for what you believe is best.
 
